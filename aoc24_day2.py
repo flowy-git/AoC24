@@ -1,5 +1,5 @@
 # setup
-file = "aoc24_day2_input.txt"
+file = "./inputs/aoc24_day2_input.txt"
 safe_count = 0
 safe_damp_count = 0
 

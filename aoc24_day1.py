@@ -1,5 +1,5 @@
 # setup
-file = "aoc24_day1_input.txt"
+file = "./inputs/aoc24_day1_input.txt"
 list1 = []
 list2 = []
 distance = 0
