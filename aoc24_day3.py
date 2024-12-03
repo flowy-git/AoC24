@@ -10,32 +10,33 @@ part2_values_to_multiply = []
 part2_total_sum = 0
 part1_total_sum = 0
 
+def regex_pairs_to_values(regex_result_list : list) -> list:
+    values_to_multiply = []
+    for mult_pair in regex_result_list:
+        vals_list = re.findall('\d+', mult_pair)
+        int_vals_list = []
+        for val in vals_list:
+            int_vals_list.append(int(val))
+        values_to_multiply.append(int_vals_list)
+    return values_to_multiply
+
+def multiply_vals(values_to_multiply : list) -> int:
+    total = 0
+    for pair in values_to_multiply:
+        partial_sum = pair[0] * pair[1]
+        total += partial_sum
+    return total
+
 # TO-DO : reqrite to use functions -> want to reuse part1 efficiently for part2
 
 # load & process input
 with open(file) as aoc_input:
     for line in aoc_input:
         line = line.replace("\n", "")
-        #extract valid mul using regex extraction
         regex_result_list.extend(re.findall('mul\(\d+,\d+\)', line))
+        part1_vals_to_multiply = regex_pairs_to_values(regex_result_list)
+        part1_total = multiply_vals(part1_vals_to_multiply)
         part2_string += line
-        #part2_do_mul_strings.extend(re.findall('',line))
-
-   
-# process regex results to numerics : mul(\d+, \d+) -> [d,d]
-for mult_pair in regex_result_list:
-    vals_list = re.findall('\d+', mult_pair)
-    int_vals_list = []
-    for val in vals_list:
-        int_vals_list.append(int(val))
-    values_to_multiply.append(int_vals_list)
-
-# multiply/evaluate the numerics : [d,d] -> d*d -> total += d*d
-for pair in values_to_multiply:
-    #print(pair)
-    partial_sum = pair[0] * pair[1]
-    #print(partial_sum)
-    part1_total_sum += partial_sum
 
 # part2: only take substrings with do(), none with don't(), and beginning is considered valid
 # idea: extract the valid substrings, then run them through part1
@@ -96,7 +97,7 @@ for pair in part2_values_to_multiply:
     part2_total_sum += partial_sum
 
 # print results
-print("Part 1: ", part1_total_sum)
+print("Part 1: ", part1_total)
 print("Part 2: ", part2_total_sum)
 
 # current solution is off by 1,696,277 (when comparing to shared solution)
