@@ -46,7 +46,7 @@ if begin:
     part2_do_mul_strings.append(begin.group())
 
 print('middle:')
-middle = re.findall('do\(\).*?(don\'t\(\)|do\(\))', part2_string)
+middle = re.findall('do\(\).*?don\'t\(\)', part2_string)
 if middle:
     for i in middle:
         print(i)
@@ -61,8 +61,10 @@ if middle:
     # possible fix:
         # rather than cutting off by do() .... dont(), we cut off by do() ... do() and do() ... dont()
         # using non-greedy!
+        # YEAH FUCK NO THAT DIDNT WORK LMAO
+    # new idea: keep middle the same, but adapt the end to not only go off of the last do(), but the last do() such that there is no more dont()
 
-end = re.search('do\(\)(?!.*do).*', part2_string)
+end = re.search('do\(\)(?!.*don\'t\(\)).*', part2_string)
 print('end:')
 if end:
     print(end.group())
