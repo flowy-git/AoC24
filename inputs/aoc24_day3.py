@@ -39,20 +39,37 @@ for pair in values_to_multiply:
 
 # part2: only take substrings with do(), none with don't(), and beginning is considered valid
 # idea: extract the valid substrings, then run them through part1
+print('begin:')
+begin = re.search('^.*?(do\(\)|don\'t\(\))', part2_string)
+if begin:
+    print(begin.group())
+    part2_do_mul_strings.append(begin.group())
 
-part2_do_mul_strings.append(re.search('^.*?do', part2_string).group())
-print(re.search('^.*?do', part2_string).group())
-part2_do_mul_strings.extend(re.findall('do\(\).*don\'t\(\)', part2_string))
-part2_do_mul_strings.append(re.search('do(?!.*do).*', part2_string).group())
+print('middle:')
+middle = re.findall('do\(\).*?don\'t\(\)', part2_string)
+if middle:
+    for i in middle:
+        print(i)
+    part2_do_mul_strings.extend(middle)
+
+end = re.search('do\(\)(?!.*do).*', part2_string)
+print('end:')
+if end:
+    print(end.group())
+    part2_do_mul_strings.append(end.group())
+
 print()
-print(re.search('do(?!.*do).*', part2_string).group())
+print("all extracted lines:")
 
 for line in part2_do_mul_strings:
-    #print(line)
+    print(line)
     part2_regex_result_list.extend(re.findall('mul\(\d+,\d+\)', line))
-
+print()
+print("extracted mult pairs:")
 for mult_pair in part2_regex_result_list:
+    print(mult_pair)
     vals_list = re.findall('\d+', mult_pair)
+    print(vals_list)
     int_vals_list = []
     for val in vals_list:
         int_vals_list.append(int(val))
@@ -60,9 +77,10 @@ for mult_pair in part2_regex_result_list:
 
 # multiply/evaluate the numerics : [d,d] -> d*d -> total += d*d
 for pair in part2_values_to_multiply:
-    #print(pair)
+    print('pair to multiply')
+    print(pair)
     partial_sum = pair[0] * pair[1]
-    #print(partial_sum)
+    print(partial_sum)
     part2_total_sum += partial_sum
 
 # print results
