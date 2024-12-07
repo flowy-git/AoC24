@@ -64,8 +64,8 @@ def part1(maps : list):
     while True:
         #print(guard_pos)
         #print(maps[guard_pos[0]][guard_pos[1]])
-        if [guard_pos[0],guard_pos[1]] not in visited:
-            visited.append([guard_pos[0],guard_pos[1]])
+        if [guard_pos[0],guard_pos[1], symbols[guard_direction % 4]] not in visited:
+            visited.append([guard_pos[0],guard_pos[1], symbols[guard_direction % 4]])
             #print("added to visited")
         
         while True:
@@ -73,8 +73,8 @@ def part1(maps : list):
                 break
             guard_direction += 1
             maps[guard_pos[0]][guard_pos[1]] = symbols[guard_direction % 4]
-        if [guard_pos[0],guard_pos[1]] not in visited:
-            visited.append([guard_pos[0],guard_pos[1]])
+        if [guard_pos[0],guard_pos[1], symbols[guard_direction % 4]] not in visited:
+            visited.append([guard_pos[0],guard_pos[1], symbols[guard_direction % 4]])
         if next_unmapped(guard_pos[0], guard_pos[1], maps):
             #print("unmapped: ", guard_pos)
             break
@@ -90,15 +90,23 @@ def part1(maps : list):
             guard_pos[0] += 1
         maps[guard_pos[0]][guard_pos[1]] = guard
     #print('RETURN visited amount')
-    print(visited)
+    #print(visited)
     return visited
     
-def have_loop(start_pos, maps):
-    visited = []
+def have_loop(start_pos, maps, location, visited):
     symbols = ['^', '>', 'v', '<']
     guard_direction = 0
-    guard_pos = start_pos[:]
+    if(len(visited) != 0):
+        guard_pos = visited.pop()
+        maps[start_pos[0]][start_pos[1]] = '.'
+        maps[guard_pos[0]][guard_pos[1]] = guard_pos[2]
+        guard_direction = symbols.index(guard_pos[2])
+        for place in visited:
+            maps[place[0]][place[1]] = 'X'
+    else:
+        guard_pos = start_pos[:]
     #print(guard_pos)
+    #print(guard_direction)
     while True:
         #print("checking for loop")
         
@@ -106,6 +114,8 @@ def have_loop(start_pos, maps):
             #print("loop found:")
             #print(guard_pos[0],guard_pos[1], symbols[guard_direction % 4])
             #print(visited)
+            #print("loop found")            
+            
             return True
         else:
             visited.append([guard_pos[0],guard_pos[1], symbols[guard_direction % 4]])
@@ -131,6 +141,7 @@ def have_loop(start_pos, maps):
             guard_pos[0] += 1
         maps[guard_pos[0]][guard_pos[1]] = guard
     #print(visited)
+    
     return False
 
 def part2(maps, part1_visited):
@@ -141,21 +152,22 @@ def part2(maps, part1_visited):
     #print("originalmap")
     #for line in maps:
         #print(line)
-    for location in part1_visited:
+    for location in range(len(part1_visited)):
         #print("locatio to check", location, "   ", guard_pos)
         mod_map = copy.deepcopy(maps)
+        visited = copy.deepcopy(part1_visited)
         #print(guard_pos)
-        mod_map[location[0]][location[1]] = '#'
+        mod_map[visited[location][0]][visited[location][1]] = '#'
         #print(guard_pos)
-        if have_loop(guard_pos, mod_map):
+        if have_loop(guard_pos, mod_map, visited[location], visited[:location]):
             loop_count += 1
-            places.append(location)
+            places.append(visited[location])
         #for line in mod_map:
         #    print(line)
         #print("location check done, guard pos: ", guard_pos)
     #for line in maps:
     #    print(line)
-    print(places)
+    #print(places)
     return loop_count
 
     
@@ -165,11 +177,15 @@ with open(file) as aoc_input:
     for line in aoc_input:
         line = line.replace("\n", "")
         line = list(line)
-        print(line)
+        #print(line)
         mapped.append(line)
     part1map = copy.deepcopy(mapped)
     part1 = part1(part1map)
-    part1_result = len(part1)
+    unique_visits = []
+    for position in part1:
+        if [position[0], position[1]] not in unique_visits:
+            unique_visits.append([position[0], position[1]])
+    part1_result = len(unique_visits)
     part2 = part2(mapped, part1)
     
     
