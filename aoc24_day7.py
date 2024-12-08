@@ -5,6 +5,8 @@ total_calibration_results = 0
 
 def part1(results, values):
     toreturn = 0
+    invalid_results = []
+    invalid_vals = []
     for i in range(len(results)):
         vals = values[i]
         num_ops = len(vals) - 1
@@ -30,7 +32,10 @@ def part1(results, values):
         #print(temporary_results)
         if results[i] in temporary_results:
             toreturn += results[i]
-    return toreturn
+        else:
+            invalid_results.append(results[i])
+            invalid_vals.append(vals)
+    return invalid_results, invalid_vals, toreturn
 
 def part2(results, values):
     toreturn = 0
@@ -53,6 +58,7 @@ def part2(results, values):
             # 0, 2(skip first two), 7(skip 1st 2, skip 2nd 4), 15(skip 1st 2, 2nd 4, 3rd 8),
         current_count = 0
         if len(vals) >= 2:
+            count = (len(vals)-2)*2 /3
             for j in range(len(vals)-2):
                 for test_case in temporary_results[current_count:]:
                     temp_result1 = test_case + int(vals[j+2])
@@ -65,8 +71,11 @@ def part2(results, values):
                     temporary_results.append(temp_result2)
                     temporary_results.append(temp_result3)
                 current_count += 3**(j+1)
-        #print(results[i])
-        #print(temporary_results)
+                if j > count:
+                    continue
+                    """ if results[i] in temporary_results:
+                        break """
+                    
         if results[i] in temporary_results:
             #print("FOUND")
             toreturn += results[i]
@@ -85,8 +94,9 @@ with open(file) as aoc_input:
         vals = line[1]
         vals = vals.split(' ')
         values.append(vals)
-    part1_result = part1(results, values)
-    part2_result = part2(results, values)
+    part1_invalid_results, part1_invalid_vals,  part1_result = part1(results, values)
+    part2_result = part1_result + part2(part1_invalid_results, part1_invalid_vals)
+    # Optimisation measure recommended by someone -> have part2 only process the ones that are valid thru part2 problem change
 
 
 # print results
