@@ -64,35 +64,15 @@ def get_actions(problem, node_state):
     return actions
 
 def solution(problem, node, expanded):
-    # relies on node having stored parent and action!!!!
-    # do we already yaml format here? prolly good idea
-    # construct a dictionary
     start_node = Node(problem['problem']['city_start'], 0, 0, 0)
     path = []
-    path_cost = int(node.path_cost)
     current_node = node
     while current_node is not start_node and isinstance(current_node, Node):
         # take the node, work up towards start_node
         path.append(current_node.state)
         current_node = current_node.parent
-
-    path.reverse()
-
-    heuristic = {}
-    for city in problem['problem']['cities']:
-        heuristic['city_' + city] = float(0)
-        # THIS WORKS FOR SUBTASK1 with h(n) = 0
-        # NEED TO MODIFY WHEN WE WANT TO USE solution() FOR OTHER h(n)
-
-    toreturn = {
-        'solution': {
-            'cost': float(path_cost),
-            'path': path,
-            'expanded_nodes': expanded,
-            'heuristic': heuristic
-        }
-    }
-    return yaml.dump(toreturn)
+    toreturn = len(path)
+    return toreturn
     
 
 def is_goal_state(problem, node_state):
