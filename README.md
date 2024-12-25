@@ -8,7 +8,7 @@ Input files have been omitted due to copyright, inputs can however be found on h
 ---
 
 ### Status:
-Current Status of completions can be seen here, it is planned to eventually complete all Days and Parts
+Current Status of completions can be seen here, still planning to eventually complete all Parts
 
 
 | Day | Part1  | Part2 | Day   | Part1 | Part2 |
