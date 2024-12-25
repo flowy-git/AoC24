@@ -11,6 +11,12 @@ coordinates = []
 # we want to get to exit := 70,70 (real input) bzw 6,6 (example input)
 
 def part1(coordinates, num_bytes):
+    X = 6
+    Y = 6
+    problem = [[x, y] for x in range(X+1) for y in range(Y+1)]
+    blacklist = coordinates[:num_bytes]
+    toreturn = subtask_1(problem, blacklist)
+    return toreturn
     # function to simulate first X number of bytes falling and return minimum step number
 
 # plan: (ab)use a python implementation of A* search/uniform-cost-search created as part of a uni course
@@ -18,7 +24,7 @@ def part1(coordinates, num_bytes):
 
 class Node:
     def __init__(self, state, parent, action, path_cost = 1):
-        self.state = state # city name -> string
+        self.state = state # we mod state to be a [X,Y] list
         self.parent = parent # parent city -> currently stored as Node object, might be extra overhead compared to storing name&hash
         self.action = action # action
         self.path_cost = path_cost # cost -> int
@@ -34,19 +40,28 @@ class Action:
         self.child_state = child_state # the city we go to
         self.cost = cost # the cost of the action
 
-def subtask_1(problem):
-    node = Node(problem['problem']['city_start'], 0, 0, 0) # initial state
+def subtask_1(problem, blacklist):
+    node = Node([0,0], 0, 0, 0) # initial state -> Position X,Y = 0,0
     frontier = [node]
     explored_set = []
     while True:
         if len(frontier) == 0:
             raise ValueError("Subtask1_problem_issue_frontier_empty")
+        #else:
+            #print("frontier len fine\n")
+            #print(len(frontier))
+            #print("\n")
         node = frontier.pop() # takes last element, removes from frontier -> if ordered correctly, lowest cost
-        if is_goal_state(problem, node.state):
-            return solution(problem, node, len(explored_set)) # need to define and cosntruct node properly to obtain solution
+        #if is_goal_state(problem, node.state):
+        ########## TEST CASE ONLY GOAL STATE -> NEED TO CHANGE TO 1024 OR OTHER
+        if node.state == [6,6]:
+        ########## TEST CASE ONLY GOAL STATE
+            print("solution found")
+            return solution(problem, node) # need to define and cosntruct node properly to obtain solution
         explored_set.append(node)
-        for action in get_actions(problem, node.state):
-            child = Node(action.child_state, node, action, (action.cost + node.path_cost))
+        for action in get_actions(problem, node.state, blacklist):
+            #print(action)
+            child = Node(action.child_state, node, action)
             if (child not in explored_set) and (child not in frontier):
                 frontier.append(child)
                 # re-sort frontier???
@@ -56,40 +71,55 @@ def subtask_1(problem):
                 if frontier[idx].path_cost > child.path_cost:
                     frontier[idx] = child
 
-def get_actions(problem, node_state):
+def get_actions(problem, node_state, blacklist):
+    #print("get actions triggered")
+    X = node_state[0]
+    Y = node_state[1]
+    # this is how we define what steps we can take from a given position
+    # idea: given coordiantes of node_state being X,Y
+    # line up [X, Y+1], [X+1, Y], [X, Y-1], [X-1, Y]
+    # maintain a blacklist of positions: all fallen bytes, and out of bounds positions
+    # if not in those, return
+    possible_actions = [[X, Y+1], [X+1, Y], [X, Y-1], [X-1, Y]]
+    ranges = list(range(7))
     actions = []
-    for city, cost in problem['problem']['city_' + node_state]['connects_to'].items():
-        action = Action(city, int(cost)) # need to see how yaml access works here # update: should work like this
-        actions.append(action)
+    #print("possible actions : ", possible_actions)
+    #print("ranges : ", ranges)
+    #print("vlacklist : ", blacklist)
+    
+    for action in possible_actions:
+        #print("action to verifz : ", action)
+        if action not in blacklist:
+            #print("action not in blacklist")
+            #print("action X : ", action[0])
+            #print("action Y : ", action[1])
+            if action[0] in ranges and action[1] in ranges:
+                #print("action cleared ranges")
+                actions.append(Action(action))
+    #print("actions to be returned : ", actions)
     return actions
 
-def solution(problem, node, expanded):
-    start_node = Node(problem['problem']['city_start'], 0, 0, 0)
+def solution(problem, node):
+    start_node = Node([0,0], 0, 0, 0)
     path = []
     current_node = node
     while current_node is not start_node and isinstance(current_node, Node):
         # take the node, work up towards start_node
         path.append(current_node.state)
         current_node = current_node.parent
-    toreturn = len(path)
-    return toreturn
-    
-
-def is_goal_state(problem, node_state):
-    if problem['problem']['city_end'] == node_state:
-        return True
-    return False
-
-
-
+    return path
 
 # load & process input
 with open(file) as aoc_input:
     patterns_done = False
     for line in aoc_input:
+        line = line.replace("\n", "")
         line = line.split(",")
+        line = [int(value) for value in line]
         coordinates.append(line)
-    part1 = part1(coordinates, 12)
+    solution_path = part1(coordinates, 12)
+    part1 = len(solution_path) - 1 # number of steps = path nodes - 1
+    #print(solution_path)
 
 # print results
 print("Part 1: ", part1)
