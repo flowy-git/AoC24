@@ -29,7 +29,7 @@ class Node:
         self.parent = parent # parent city -> currently stored as Node object, might be extra overhead compared to storing name&hash
         self.action = action # action
         self.path_cost = path_cost # cost -> int
-        self.f_score = self.path_cost + self.heuristic([70, 70])
+        self.f_score = self.path_cost + self.heuristic([N, N])
 
     def heuristic(self, goal):
         # manhattan distance
@@ -54,7 +54,7 @@ def subtask_1(problem, blacklist):
         if len(frontier) == 0:
             raise ValueError("Subtask1_problem_issue_frontier_empty")
         node = frontier.pop(0)
-        if node.state == [70,70]:
+        if node.state == [N,N]:
             print("solution found")
             return solution(problem, node)
         explored_set.append(node)
