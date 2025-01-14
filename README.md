@@ -17,7 +17,7 @@ Current Status of completions can be seen here, still planning to eventually com
 | 2   | :star: | 🌟    | 15    | ⏲     |       |
 | 3   | :star: | 🌟    | 16    | ⏲     |       |
 | 4   | ⭐      | 🌟    | 17    | ⏲     |       |
-| 5   | ⭐      | 🌟    | 18    | ⏲     |       |
+| 5   | ⭐      | 🌟    | 18    | ⭐     |  ⏲   |
 | 6   | ⭐      | 🌟    | 19    | ⏲     |       |
 | 7   | ⭐      | 🌟    | 20    | ⏲     |       |
 | 8   | ⏲      |       | 21    | ⏲     |       |
