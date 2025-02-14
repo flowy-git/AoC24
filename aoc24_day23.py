@@ -2,17 +2,14 @@
 file = "./inputs/aoc24_day23_input.txt"
 connection = {}
 threes = []
-# helper functions
 
-
+# PART1 FUNCTIONING
 
 # defining part1
 def part1(connection):
     # get networks of three
     for key in connection.keys():
-        #print(key)
         set = connection[key]
-        #print(set)
         for i in set:
             for j in set:
                 if i != j:
@@ -20,7 +17,6 @@ def part1(connection):
                         toappend = sorted([key, i, j])
                         if toappend not in threes:
                             threes.append(toappend)
-
     # filter for "t"
     toreturn = []
     for toappend in threes:
