@@ -4,6 +4,8 @@ schematics = [[]]
 locks = []
 keys = []
 
+# RE PART 2 : NEED TO COMPLETE ALL OTHERS BEFORE PART2 IS UNLOCKED
+
 # helper functions for part1
 def divide_schems(schematics):
     for schem in schematics:
