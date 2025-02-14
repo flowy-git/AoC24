@@ -4,7 +4,8 @@ connection = {}
 threes = []
 
 # PART1 FUNCTIONING
-# PART2 - received tip on using bron-kerbosch algo - implementing pseudocode from wikipedia
+# PART2 FUNCTIONING
+#   - received tip on using bron-kerbosch algo - implemented pseudocode from wikipedia
 
 
 # defining part1
