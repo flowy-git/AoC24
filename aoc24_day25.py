@@ -1,10 +1,10 @@
 # setup
-import copy
 file = "./inputs/aoc24_day25_input.txt"
 schematics = [[]]
 locks = []
 keys = []
 
+# helper functions for part1
 def divide_schems(schematics):
     for schem in schematics:
         if schem[0] == ['#', '#', '#', '#', '#']:
@@ -33,14 +33,17 @@ def overlaps(lock, key):
             return True
     return False
 
-def part_1(locks_h, keys_h):
+# defining part1
+def part_1(schematics):
     toreturn = 0
+    divide_schems(schematics)
+    locks_h = schematic_to_heights(locks)
+    keys_h = schematic_to_heights(keys)
     for lock in locks_h:
         for key in keys_h:
             if not overlaps(lock, key):
                 toreturn += 1
     return toreturn
-
 
 # load & process input
 with open(file) as aoc_input:
@@ -54,10 +57,8 @@ with open(file) as aoc_input:
         line = line.replace("\n", "")
         line = list(line)
         schematics[schematic_num].append(line)
-    divide_schems(schematics)
-    locks_h = schematic_to_heights(locks)
-    keys_h = schematic_to_heights(keys)
-    part1 = part_1(locks_h, keys_h)
+    part1 = part_1(schematics)
+
 # print results
 print("Part 1: ", part1)
 #print("Part 2: ", part2)
