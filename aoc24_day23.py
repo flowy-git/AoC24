@@ -4,6 +4,8 @@ connection = {}
 threes = []
 
 # PART1 FUNCTIONING
+# PART2 - received tip on using bron-kerbosch algo - implementing pseudocode from wikipedia
+
 
 # defining part1
 def part1(connection):
@@ -29,6 +31,34 @@ def part1(connection):
     return toreturn
 
 
+# defining part2
+def part2(connection, r=None, p=None, x=None, max_clique=None):
+    if r is None:
+        r = set()
+        p = set(connection.keys())
+        x = set()
+        max_clique = []
+    if not p and not x:
+        if len(r) > len(max_clique):
+            max_clique[:] = list(r)
+        return
+
+    pivot = None
+    max_intersection = -1
+    for u in p.union(x):
+        intersection_size = len(p.intersection(set(connection[u])))
+        if intersection_size > max_intersection:
+            max_intersection = intersection_size
+            pivot = u
+    
+    pivot_neighbors = set(connection[pivot]) if pivot else set()
+    for v in p.difference(pivot_neighbors):
+        neighbors_v = set(connection[v])
+        part2(connection, r.union({v}), p.intersection(neighbors_v), x.intersection(neighbors_v), max_clique)
+        p = p.difference({v})
+        x = x.union({v})
+    return max_clique
+
 # load & process input
 with open(file) as aoc_input:
     for line in aoc_input:
@@ -43,7 +73,13 @@ with open(file) as aoc_input:
         else:
             connection[line[1]].append(line[0])
     part1 = len(part1(connection))
+    part2_list = sorted(part2(connection))
+    part2 = ""
+    for node in part2_list:
+        part2 += node
+        part2 += ','
+    part2 = part2[:-1]
 
 # print results
 print("Part 1: ", part1)
-#print("Part 2: ", part2)
+print("Part 2: ", part2)
