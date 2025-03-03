@@ -15,8 +15,8 @@ Y = 0
 # X horizontal from left, Y vertical from top
 
 
-# we start 0,0
-# we want to get to exit := 70,70 (real input) bzw 6,6 (example input)
+# we start (X-1, 1)
+# we want to get to exit := (1, Y-1)
 
 def part1(coordinates):
     #X = N
@@ -36,7 +36,7 @@ class Node:
         self.parent = parent # parent city -> currently stored as Node object, might be extra overhead compared to storing name&hash
         self.action = action # action
         self.path_cost = path_cost # cost -> int
-        self.f_score = self.path_cost + self.heuristic([N, N])
+        self.f_score = self.path_cost + self.heuristic([1, Y-1])
 
     def heuristic(self, goal):
         # manhattan distance
@@ -54,14 +54,20 @@ class Action:
         self.cost = cost # the cost of the action
 
 def subtask_1(problem, blacklist):
-    node = Node([0,0], 0, 0, 0) # initial state -> Position X,Y = 0,0
+    node = Node([1, Y-1], 0, 0, 0) # initial state -> Position X,Y = 0,0
     frontier = [node]
     explored_set = []
+    for i in frontier:
+        print(i.state)
+    print("########## STARTING #############")
     while True:
+        print("///// CURRENT FRONTIER //////")
+        for i in frontier:
+            print(i.state)
         if len(frontier) == 0:
             raise ValueError("Subtask1_problem_issue_frontier_empty")
         node = frontier.pop(0)
-        if node.state == [N,N]:
+        if node.state == [X-1, 1]:
             print("solution found")
             return solution(problem, node)
         explored_set.append(node)
@@ -79,19 +85,20 @@ def subtask_1(problem, blacklist):
                 frontier.sort()
 
 def get_actions(problem, node_state, blacklist):
-    X = node_state[0]
-    Y = node_state[1]
-    possible_actions = [[X, Y+1], [X+1, Y], [X, Y-1], [X-1, Y]]
-    ranges = list(range(N + 1))
+    varX = node_state[0]
+    varY = node_state[1]
+    possible_actions = [[varX, varY+1], [varX+1, varY], [varX, varY-1], [varX-1, varY]]
+    ranges_x = list(range(X + 1))
+    ranges_y = list(range(Y + 1))
     actions = []
     for action in possible_actions:
         if action not in blacklist:
-            if action[0] in ranges and action[1] in ranges:
+            if action[0] in ranges_x and action[1] in ranges_y:
                 actions.append(Action(action))
     return actions
 
 def solution(problem, node):
-    start_node = Node([0,0], 0, 0, 0)
+    start_node = Node([1, Y-1], 0, 0, 0)
     path = []
     current_node = node
     while current_node is not start_node and isinstance(current_node, Node):
@@ -102,9 +109,9 @@ def solution(problem, node):
 
 def digitise_map(map):
     toreturn = []
-    for idx in range(X):
-        for idy in range(Y):
-            if map[idx][idy] == '#':
+    for idx in range(X+1):
+        for idy in range(Y+1):
+            if map[idy][idx] == '#':
                 toreturn.append([idx, idy])
     return toreturn
 
@@ -116,11 +123,14 @@ with open(file) as aoc_input:
         line = line.replace("\n", "")
         line = list(line)
         map.append(line)
+    Y -= 1
+    X -= 1
     coordinates = digitise_map(map)
     print(coordinates)
-    #solution_path = part1(coordinates[:1024])
-    #part1 = len(solution_path) - 1
+    solution_path = part1(coordinates)
+    print(solution_path)
+    part1 = len(solution_path) - 1
 
 # print results
-#print("Part 1: ", part1)
+print("Part 1: ", part1)
 #print("Part 2: ", part2)
