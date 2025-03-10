@@ -1,8 +1,10 @@
 # setup
 file = "./inputs/aoc24_day13_input.txt"
+import numpy as np
 costA = 3
 costB = 1
 Machines = []
+Machines_part2 = []
 
 
 
@@ -20,9 +22,12 @@ def play_claw(claw_machine):
     vals_A = claw_machine[0]
     vals_B = claw_machine[1]
     prize = claw_machine[2]
-    solution_B = round((( prize[0] / vals_A[0] ) - ( prize[1] / vals_A[1] )) / (( vals_B[0] / vals_A[0] ) - ( vals_B[1] / vals_A[1])))
+    solution_B = (( prize[0] / vals_A[0] ) - ( prize[1] / vals_A[1] )) / (( vals_B[0] / vals_A[0] ) - ( vals_B[1] / vals_A[1]))
     solution_A = ( prize[0] - ( solution_B * vals_B[0] )) / vals_A[0]
-    if solution_A % 1 == 0.0 and solution_B % 1 == 0.0:
+    round_A = round(solution_A)
+    round_B = round(solution_B)
+    if round_A*vals_A[0] + round_B*vals_B[0] == prize[0] and round_A*vals_A[1] + round_B*vals_B[1] == prize[1]:
+    #if solution_A % 1 == 0.0 and solution_B % 1 == 0.0:
         return True, (solution_A * costA + solution_B * costB)
     else:
         return False, 0
@@ -54,10 +59,13 @@ with open(file) as aoc_input:
             elif line[0] == "ButtonB":
                 vals_B = line[1]
             elif line[0] == "Prize":
+                line[1] = [value for value in line[1]]
                 prize = line[1]
                 Machines.append([vals_A, vals_B, prize])
-    part1_result = part1(Machines)     
+                Machines_part2.append([vals_A, vals_B, [value+10000000000000 for value in prize]])
+    part1_result = part1(Machines)
+    part2_result = part1(Machines_part2)
 
 # print results
 print("Part 1: ", part1_result)
-#print("Part 2: ", part2_result)
+print("Part 2: ", part2_result)
