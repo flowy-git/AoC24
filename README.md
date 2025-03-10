@@ -15,7 +15,7 @@ Current Status of completions can be seen here, still planning to eventually com
 | --- | ------ | ----- | ----- | ----- | ----- |
 | 1   | ⭐      | 🌟    | 14    | ⏲     |       |
 | 2   | :star: | 🌟    | 15    | ⏲     |       |
-| 3   | :star: | 🌟    | 16    | ⏲     |       |
+| 3   | :star: | 🌟    | 16    | ⭐     |   ⏲  |
 | 4   | ⭐      | 🌟    | 17    | ⏲     |       |
 | 5   | ⭐      | 🌟    | 18    | ⭐     |  ⏲   |
 | 6   | ⭐      | 🌟    | 19    | ⏲     |       |
@@ -25,6 +25,6 @@ Current Status of completions can be seen here, still planning to eventually com
 | 10  | ⭐      | 🌟    | 23    | ⭐     |  🌟   |
 | 11  | ⏲      |       | 24    | ⏲     |       |
 | 12  | ⏲      |       | 25    | ⭐     |  ⏲   |
-| 13  | ⏲      |       | Total | 11⭐   | 9🌟  |
+| 13  | ⭐      | 🌟    | Total | 13⭐   | 10🌟  |
 
 ---
