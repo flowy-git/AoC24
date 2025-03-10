@@ -27,6 +27,7 @@ with open(file) as aoc_input:
         else:
             line = line.split(':')
             line = [line[0], line[1].split(',')]
+            line[1] = [int(value) for value in line[1]]
             if line[0] == "ButtonA":
                 vals_A = line[1]
             elif line[0] == "ButtonB":
