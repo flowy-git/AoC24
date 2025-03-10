@@ -3,7 +3,30 @@ file = "./inputs/aoc24_day13_input.txt"
 costA = 3
 costB = 1
 Machines = []
-# general aid functions
+
+
+
+def part1(Machines):
+    num_prizes = 0
+    total_tokens = 0
+    for claw_machine in Machines:
+        prize_won, token_cost = play_claw(claw_machine)
+        if prize_won:
+            num_prizes += 1
+        total_tokens += token_cost
+    return [num_prizes, total_tokens]
+
+def play_claw(claw_machine):
+    vals_A = claw_machine[0]
+    vals_B = claw_machine[1]
+    prize = claw_machine[2]
+    solution_B = round((( prize[0] / vals_A[0] ) - ( prize[1] / vals_A[1] )) / (( vals_B[0] / vals_A[0] ) - ( vals_B[1] / vals_A[1])))
+    solution_A = ( prize[0] - ( solution_B * vals_B[0] )) / vals_A[0]
+    if solution_A % 1 == 0.0 and solution_B % 1 == 0.0:
+        return True, (solution_A * costA + solution_B * costB)
+    else:
+        return False, 0
+
 
 
 # load & process input
@@ -12,8 +35,6 @@ with open(file) as aoc_input:
     vals_A = ""
     vals_B = ""
     prize = ""
-    rules_list = []
-    updates_list = []
     for line in aoc_input:
         count += 1
         line = line.replace("\n", "")
@@ -34,11 +55,9 @@ with open(file) as aoc_input:
                 vals_B = line[1]
             elif line[0] == "Prize":
                 prize = line[1]
-        if count % 3 == 0:
-            Machines.append([vals_A, vals_B, prize])        
+                Machines.append([vals_A, vals_B, prize])
+    part1_result = part1(Machines)     
 
 # print results
-#print("Part 1: ", part1_result)
+print("Part 1: ", part1_result)
 #print("Part 2: ", part2_result)
-for line in Machines:
-    print(line)
