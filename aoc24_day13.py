@@ -6,9 +6,7 @@ costB = 1
 Machines = []
 Machines_part2 = []
 
-
-
-def part1(Machines):
+def part1_and_part2(Machines):
     num_prizes = 0
     total_tokens = 0
     for claw_machine in Machines:
@@ -27,12 +25,9 @@ def play_claw(claw_machine):
     round_A = round(solution_A)
     round_B = round(solution_B)
     if round_A*vals_A[0] + round_B*vals_B[0] == prize[0] and round_A*vals_A[1] + round_B*vals_B[1] == prize[1]:
-    #if solution_A % 1 == 0.0 and solution_B % 1 == 0.0:
         return True, (solution_A * costA + solution_B * costB)
     else:
         return False, 0
-
-
 
 # load & process input
 with open(file) as aoc_input:
@@ -63,8 +58,8 @@ with open(file) as aoc_input:
                 prize = line[1]
                 Machines.append([vals_A, vals_B, prize])
                 Machines_part2.append([vals_A, vals_B, [value+10000000000000 for value in prize]])
-    part1_result = part1(Machines)
-    part2_result = part1(Machines_part2)
+    part1_result = part1_and_part2(Machines)
+    part2_result = part1_and_part2(Machines_part2)
 
 # print results
 print("Part 1: ", part1_result)
