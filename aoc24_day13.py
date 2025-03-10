@@ -1,28 +1,43 @@
 # setup
 file = "./inputs/aoc24_day13_input.txt"
-
+costA = 3
+costB = 1
+Machines = []
 # general aid functions
+
 
 # load & process input
 with open(file) as aoc_input:
-    rules_done = False
+    count = 0
+    vals_A = ""
+    vals_B = ""
+    prize = ""
     rules_list = []
     updates_list = []
     for line in aoc_input:
+        count += 1
         line = line.replace("\n", "")
+        line = line.replace(" ", "")
+        line = line.replace("X", "")
+        line = line.replace("Y", "")
+        line = line.replace("+", "")
+        line = line.replace("=", "")
         if line == "":
-            rules_done = True
             continue
-        if not rules_done:
-            line = line.split('|')
-            rules_list.append(line)
         else:
-            line = line.split(',')
-            updates_list.append(line)
-    #rules_dic = process_rules(rules_list)
-    #part1_result = part1(updates_list, rules_dic)
-    #part2_result = part2(updates_list, rules_dic)
+            line = line.split(':')
+            line = [line[0], line[1].split(',')]
+            if line[0] == "ButtonA":
+                vals_A = line[1]
+            elif line[0] == "ButtonB":
+                vals_B = line[1]
+            elif line[0] == "Prize":
+                prize = line[1]
+        if count % 3 == 0:
+            Machines.append([vals_A, vals_B, prize])        
 
 # print results
 #print("Part 1: ", part1_result)
 #print("Part 2: ", part2_result)
+for line in Machines:
+    print(line)
